@@ -39,13 +39,13 @@ let entries = [
     [3, 5, 6, 0, 7, 4, 2, 1, 8]
 ]
 // passar aqui entrada 
-const start = (entries[0]);
+const start = (entries[5]);
 
 numbers = start;
+// estado inicial 
 paintBoard(board, numbers);
 
-
-
+// executando algoritmo 
 const fullPath = aStar(start, goal);
 
 const btnIniciar = document.querySelector('.btn-iniciar');
@@ -56,9 +56,9 @@ btnIniciar.addEventListener("click", (e) => {
 // caminho 
 console.log('caminho', fullPath)
 // O total de nodos visitados 
-const totalVisitedNodes = fullPath.length;
-const visitedNodesContainer = document.querySelector('.visited-nodes');
-visitedNodesContainer.innerHTML = `total de nodos visitados: ${totalVisitedNodes}`;
+const pathSize = fullPath.length;
+const patSize = document.querySelector('.path-size');
+patSize.innerHTML = `tamanho do caminho: ${pathSize}`;
 
 
 

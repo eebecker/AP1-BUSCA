@@ -128,8 +128,6 @@ function isInSet(set, neighbor) {
     return !!set.find(position => isEqual(position, neighbor))
 }
 
-
-
 /**
  * A* algorithm implementation, returns full path
  * from starting position to goal position

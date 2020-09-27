@@ -22,7 +22,7 @@ body {
     background-color: #dddddd;
 }
 
-.caminho {
+.path-desc {
     margin-bottom: 10px;
     width: 320px;
 }
@@ -59,6 +59,6 @@ body {
     align-items: center;
 }
 
-.visited-nodes {
+.info {
     margin-top: 30px;
 }
