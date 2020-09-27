@@ -190,3 +190,16 @@ function aStar(start, goal) {
     }
 }
 
+function paintBoard(board, numbers) {
+    numbers.forEach(number => {
+        let div = document.createElement("div");
+        if (number === 0) {
+            div.className = 'tile tile--empty';
+        } else {
+            div.className = 'tile';
+            div.innerHTML = number
+        }
+        board.appendChild(div)
+    })
+}
+

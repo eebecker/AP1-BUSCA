@@ -1,4 +1,10 @@
+const board = document.querySelector('.board');
+board.innerHTML = '';
+
 var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+// objetivo 
+const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+
 // exemplos de entrada: 
 let entries = [
     [1, 2, 3, 0, 6, 4, 7, 8, 5],
@@ -34,17 +40,27 @@ let entries = [
 ]
 // passar aqui entrada 
 const start = (entries[0]);
-numbers = start;
 
-// objetivo 
-const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+numbers = start;
+paintBoard(board, numbers);
 
 
 
 const fullPath = aStar(start, goal);
-console.log('fullpath', fullPath)
 
-draw(fullPath)
+const btnIniciar = document.querySelector('.btn-iniciar');
+btnIniciar.addEventListener("click", (e) => {
+    draw(fullPath)
+})
+
+// caminho 
+console.log('caminho', fullPath)
+// O total de nodos visitados 
+const totalVisitedNodes = fullPath.length;
+const visitedNodesContainer = document.querySelector('.visited-nodes');
+visitedNodesContainer.innerHTML = `total de nodos visitados: ${totalVisitedNodes}`;
+
+
 
 /**
  * Draw iteration from start to goal position
@@ -57,20 +73,10 @@ function draw(fullPath, i = 0) {
     if (i >= fullPath.length) {
         return
     }
-    const board = document.querySelector('.board');
     board.innerHTML = '';
 
     numbers = fullPath[i];
-    numbers.forEach(number => {
-        let div = document.createElement("div");
-        if (number === 0) {
-            div.className = 'tile tile--empty';
-        } else {
-            div.className = 'tile';
-            div.innerHTML = number
-        } 
-        board.appendChild(div)
-    })
+    paintBoard(board, numbers);
 
     setTimeout(() => {
         draw(fullPath, ++i)
