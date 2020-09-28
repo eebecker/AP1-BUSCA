@@ -131,17 +131,18 @@ function isInSet(set, neighbor) {
 /**
  * A* algorithm implementation, returns full path
  * from starting position to goal position
+ * using h and g score (h: how many tiles are in the wrong place; g: number of nodes traversed from the start node to the current node)
  * 
  * @param {[Number]} start position of numbers
  * @param {[Number]} goal position of numbers
  * @returns {[[Number]]} array of numbers array
  */
 function aStar(start, goal) {
-    // nodos fechados ? 
+    // nodos visitados 
     const closedSet = []
-    // nodos abertos ? 
+
+    // list that holds all the nodes that are left to be explored 
     const openSet = [start]
-    // comentario: talvez seja ao contrario;
 
     const fScores = {}
     const gScores = {}
@@ -152,12 +153,12 @@ function aStar(start, goal) {
     const cameFrom = {}
 
     while (openSet.length > 0) {
+        // chooses the most optimal node from this list 
         const current = getLowestFscore(openSet, fScores)
 
         if (isEqual(current, goal)) {
             const fullPath = reconstructPath(cameFrom, current)
-
-            return fullPath
+            return {fullPath, closedSet, openSet}
         }
 
         // remove current position from open set
@@ -184,6 +185,57 @@ function aStar(start, goal) {
             cameFrom[neighbor] = current
             gScores[neighbor] = tentativeGscore
             fScores[neighbor] = gScores[neighbor] + getHeuristic(neighbor, goal)
+
+        }
+    }
+}
+
+// using only h score (how many tiles are in the wrong place) 
+function simpleAStar(start, goal) {
+    // visited nodes 
+    const closedSet = []
+
+    // list that holds all the nodes that are left to be explored 
+    const openSet = [start]
+
+    const fScores = {}
+
+
+    fScores[start] = getHeuristic(start, goal)
+
+    const cameFrom = {}
+
+    while (openSet.length > 0) {
+        // chooses the most optimal node from this list 
+        const current = getLowestFscore(openSet, fScores)
+
+        if (isEqual(current, goal)) {
+            const fullPath = reconstructPath(cameFrom, current)
+            return {fullPath, closedSet, openSet}
+        }
+
+        // remove current position from open set
+        _.remove(openSet, (position) => isEqual(position, current))
+
+        // add current position to closed set
+        closedSet.push(current)
+
+        const neighbors = getNeighbors(current)
+
+        for (let neighbor of neighbors) {
+            if (isInSet(closedSet, neighbor)) {
+                continue
+            }
+
+            if (!isInSet(openSet, neighbor)) {
+                openSet.push(neighbor)
+            } else {
+                continue
+            }
+
+            cameFrom[neighbor] = current
+            fScores[neighbor] = getHeuristic(neighbor, goal)
+
         }
     }
 }

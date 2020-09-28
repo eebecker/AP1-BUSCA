@@ -7,7 +7,7 @@ const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
 // exemplos de entrada: 
 let entries = [
-    [1, 2, 3, 0, 6, 4, 7, 8, 5],
+    [1, 2, 3, 4, 5, 6, 0, 7, 8],
     [5, 7, 2, 0, 4, 8, 1, 6, 3],
     [4, 1, 3, 7, 0, 8, 6, 2, 5],
     [7, 4, 2, 8, 1, 5, 6, 3, 0],
@@ -39,14 +39,15 @@ let entries = [
     [3, 5, 6, 0, 7, 4, 2, 1, 8]
 ]
 // passar aqui entrada 
-const start = (entries[5]);
+const start = (entries[25]);
 
 numbers = start;
 // estado inicial 
 paintBoard(board, numbers);
 
 // executando algoritmo 
-const fullPath = aStar(start, goal);
+const {fullPath, closedSet, openSet} = aStar(start, goal);
+// const {fullPath, closedSet, openSet} = simpleAStar(start, goal);
 
 const btnIniciar = document.querySelector('.btn-iniciar');
 btnIniciar.addEventListener("click", (e) => {
@@ -55,11 +56,21 @@ btnIniciar.addEventListener("click", (e) => {
 
 // caminho 
 console.log('caminho', fullPath)
-// O total de nodos visitados 
-const pathSize = fullPath.length;
-const patSize = document.querySelector('.path-size');
-patSize.innerHTML = `tamanho do caminho: ${pathSize}`;
 
+// O tamanho do caminho  
+const pathSize = fullPath.length -1;
+const pathSizeContainer = document.querySelector('.path-size');
+pathSizeContainer.innerHTML = `tamanho do caminho: ${pathSize}`;
+
+// total de nodos visitados 
+const numberOfVisitedNodes = closedSet.length;
+const visitedNodesContainer = document.querySelector('.visited-nodes');
+visitedNodesContainer.innerHTML = `total de nodos visitados: ${numberOfVisitedNodes}`;
+
+// maior tamanho da fronteira
+const biggestFrontierSize = openSet.length;
+const biggestFrontierContainer = document.querySelector('.biggest-frontier');
+biggestFrontierContainer.innerHTML = `maior tamanho da fronteira: ${biggestFrontierSize}`;
 
 
 /**

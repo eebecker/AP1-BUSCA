@@ -42,7 +42,7 @@ body {
     justify-content: center;
     user-select: none;
     border: 1px solid;
-    border-radius: 30px;
+    border-radius: 0px;
     background-color: #ffffff;
 }
 
