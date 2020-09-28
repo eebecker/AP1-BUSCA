@@ -128,6 +128,7 @@ function isInSet(set, neighbor) {
     return !!set.find(position => isEqual(position, neighbor))
 }
 
+
 /**
  * A* algorithm implementation, returns full path
  * from starting position to goal position
@@ -158,7 +159,7 @@ function aStar(start, goal) {
 
         if (isEqual(current, goal)) {
             const fullPath = reconstructPath(cameFrom, current)
-            return {fullPath, closedSet, openSet}
+            return { fullPath, closedSet, openSet }
         }
 
         // remove current position from open set
@@ -184,6 +185,7 @@ function aStar(start, goal) {
 
             cameFrom[neighbor] = current
             gScores[neighbor] = tentativeGscore
+            // formula: f = g + h
             fScores[neighbor] = gScores[neighbor] + getHeuristic(neighbor, goal)
 
         }
@@ -199,8 +201,6 @@ function simpleAStar(start, goal) {
     const openSet = [start]
 
     const fScores = {}
-
-
     fScores[start] = getHeuristic(start, goal)
 
     const cameFrom = {}
@@ -211,7 +211,7 @@ function simpleAStar(start, goal) {
 
         if (isEqual(current, goal)) {
             const fullPath = reconstructPath(cameFrom, current)
-            return {fullPath, closedSet, openSet}
+            return { fullPath, closedSet, openSet }
         }
 
         // remove current position from open set
@@ -235,7 +235,56 @@ function simpleAStar(start, goal) {
 
             cameFrom[neighbor] = current
             fScores[neighbor] = getHeuristic(neighbor, goal)
+        }
+    }
+}
 
+// using g score (number of nodes traversed from the start node to the current node )
+function uniformCost(start, goal) {
+    // nodos visitados 
+    const closedSet = []
+
+    // list that holds all the nodes that are left to be explored 
+    const openSet = [start]
+
+    const gScores = {}
+
+    gScores[start] = 0
+
+    const cameFrom = {}
+
+    while (openSet.length > 0) {
+        // chooses the most optimal node from this list 
+        const current = getLowestFscore(openSet, gScores)
+
+        if (isEqual(current, goal)) {
+            const fullPath = reconstructPath(cameFrom, current)
+            return { fullPath, closedSet, openSet }
+        }
+
+        // remove current position from open set
+        _.remove(openSet, (position) => isEqual(position, current))
+
+        // add current position to closed set
+        closedSet.push(current)
+
+        const neighbors = getNeighbors(current)
+
+        for (let neighbor of neighbors) {
+            if (isInSet(closedSet, neighbor)) {
+                continue
+            }
+
+            const tentativeGscore = gScores[current] + 1 // distance between current and neighbor position is equal to 1
+
+            if (!isInSet(openSet, neighbor)) {
+                openSet.push(neighbor)
+            } else if (tentativeGscore >= gScores[neighbor]) {
+                continue
+            }
+
+            cameFrom[neighbor] = current
+            gScores[neighbor] = tentativeGscore
         }
     }
 }

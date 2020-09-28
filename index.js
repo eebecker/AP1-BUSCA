@@ -5,7 +5,7 @@ var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 // objetivo 
 const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
-// exemplos de entrada: 
+// exemplos de entrada: escolha uma entrada daqui, ou adicione a sua
 let entries = [
     [1, 2, 3, 4, 5, 6, 0, 7, 8],
     [5, 7, 2, 0, 4, 8, 1, 6, 3],
@@ -38,16 +38,17 @@ let entries = [
     [5, 8, 2, 1, 7, 3, 4, 6, 0],
     [3, 5, 6, 0, 7, 4, 2, 1, 8]
 ]
-// passar aqui entrada 
-const start = (entries[25]);
+// referencia a entrada aqui abaixo
+const start = (entries[18]);
 
 numbers = start;
 // estado inicial 
 paintBoard(board, numbers);
 
-// executando algoritmo 
+// executando algoritmo, escolha o algoritmo desejado abaixo e comente os outros dois
 const {fullPath, closedSet, openSet} = aStar(start, goal);
 // const {fullPath, closedSet, openSet} = simpleAStar(start, goal);
+// const {fullPath, closedSet, openSet} = uniformCost(start, goal);
 
 const btnIniciar = document.querySelector('.btn-iniciar');
 btnIniciar.addEventListener("click", (e) => {
