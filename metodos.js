@@ -1,5 +1,5 @@
 /**
-* Get heuristic cost
+* obtém custo heurístico
 * 
 * @param {[Number]} current position of numbers
 * @param {[Number]} goal position of numbers
@@ -18,7 +18,7 @@ function getHeuristic(current, goal) {
 }
 
 /**
- * Get position with lowest fScore
+ * obtém a posição com menor fScore
  * 
  * @param {[[Number]]} openSet array of open positions 
  * @param {[Number]} fScores array of fscores
@@ -39,7 +39,7 @@ function getLowestFscore(openSet, fScores) {
 }
 
 /**
- * Get successfull path from full path covered
+ * obtém o caminho completo percorrido
  * 
  * @param {Object} cameFrom full path covered
  * @param {[Number]} current goal position
@@ -58,7 +58,7 @@ function reconstructPath(cameFrom, current) {
 }
 
 /**
- * Get neighbor positions of current position
+ * obtém as posições vizinhas da posição atual
  * 
  * @param {[Number]} current position of numbers
  * @returns {[[Number]]} 
@@ -107,7 +107,7 @@ function getNeighbors(current) {
 }
 
 /**
- * Compare if two positions are equal
+ * compara se duas posições são iguais
  * 
  * @param {[Number]} current position of numbers
  * @param {[Number]} goal position of numbers
@@ -130,22 +130,22 @@ function isInSet(set, neighbor) {
 
 
 /**
- * A* algorithm implementation, returns full path
- * from starting position to goal position
- * using h and g score (h: how many tiles are in the wrong place; g: number of nodes traversed from the start node to the current node)
+ * Algoritmo A* 
+ * usando o score h e g (h: quantos blocos estão no lugar errado; g: número de nós percorridos do nó inicial ao nó atual)
  * 
  * @param {[Number]} start position of numbers
  * @param {[Number]} goal position of numbers
  * @returns {[[Number]]} array of numbers array
- */
+*/
 function aStar(start, goal) {
     // nodos visitados 
     const closedSet = []
 
-    // list that holds all the nodes that are left to be explored 
+    // lista que contém todos os nós que ainda precisam ser explorados 
     const openSet = [start]
 
     const fScores = {}
+
     const gScores = {}
 
     gScores[start] = 0
@@ -154,7 +154,7 @@ function aStar(start, goal) {
     const cameFrom = {}
 
     while (openSet.length > 0) {
-        // chooses the most optimal node from this list 
+        // escolhe o nodo com menor custo da lista 
         const current = getLowestFscore(openSet, fScores)
 
         if (isEqual(current, goal)) {
@@ -162,10 +162,10 @@ function aStar(start, goal) {
             return { fullPath, closedSet, openSet }
         }
 
-        // remove current position from open set
+        // remove posição atual do open set
         _.remove(openSet, (position) => isEqual(position, current))
 
-        // add current position to closed set
+        // adiciona posição atual ao closed set 
         closedSet.push(current)
 
         const neighbors = getNeighbors(current)
@@ -175,7 +175,7 @@ function aStar(start, goal) {
                 continue
             }
 
-            const tentativeGscore = gScores[current] + 1 // distance between current and neighbor position is equal to 1
+            const tentativeGscore = gScores[current] + 1 // distância entre a posição atual e a posição vizinha é igual a 1
 
             if (!isInSet(openSet, neighbor)) {
                 openSet.push(neighbor)
@@ -192,21 +192,30 @@ function aStar(start, goal) {
     }
 }
 
-// using only h score (how many tiles are in the wrong place) 
+/**
+ * Algoritmo A* simples
+ * usando apenas o h score (quantas peças estão no lugar errado)
+ * 
+ * @param {[Number]} start position of numbers
+ * @param {[Number]} goal position of numbers
+ * @returns {[[Number]]} array of numbers array
+*/
+// 
 function simpleAStar(start, goal) {
-    // visited nodes 
+    // nodos visitados 
     const closedSet = []
 
-    // list that holds all the nodes that are left to be explored 
+    // lista que contém todos os nós que ainda precisam ser explorados 
     const openSet = [start]
 
     const fScores = {}
+
     fScores[start] = getHeuristic(start, goal)
 
     const cameFrom = {}
 
     while (openSet.length > 0) {
-        // chooses the most optimal node from this list 
+        // escolhe o nodo com menor custo da lista 
         const current = getLowestFscore(openSet, fScores)
 
         if (isEqual(current, goal)) {
@@ -214,10 +223,10 @@ function simpleAStar(start, goal) {
             return { fullPath, closedSet, openSet }
         }
 
-        // remove current position from open set
+        // remove posição atual do open set
         _.remove(openSet, (position) => isEqual(position, current))
 
-        // add current position to closed set
+        // adiciona posição atual ao closed set 
         closedSet.push(current)
 
         const neighbors = getNeighbors(current)
@@ -239,33 +248,40 @@ function simpleAStar(start, goal) {
     }
 }
 
-// using g score (number of nodes traversed from the start node to the current node )
+/**
+ * Algoritmo custo uniforme
+ * Simplesmente adicionando +1 nos custos dos nodos filhos
+ * 
+ * @param {[Number]} start position of numbers
+ * @param {[Number]} goal position of numbers
+ * @returns {[[Number]]} array of numbers array
+*/
 function uniformCost(start, goal) {
-    // nodos visitados 
+    // Nodos visitados 
     const closedSet = []
 
-    // list that holds all the nodes that are left to be explored 
+    // lista que contém todos os nós que ainda precisam ser explorados 
     const openSet = [start]
 
-    const gScores = {}
+    const fScores = {}
 
-    gScores[start] = 0
+    fScores[start] = 0
 
     const cameFrom = {}
 
     while (openSet.length > 0) {
-        // chooses the most optimal node from this list 
-        const current = getLowestFscore(openSet, gScores)
+        // Escolhe o nodo com menor custo da lista 
+        const current = getLowestFscore(openSet, fScores)
 
         if (isEqual(current, goal)) {
             const fullPath = reconstructPath(cameFrom, current)
             return { fullPath, closedSet, openSet }
         }
 
-        // remove current position from open set
+        // Remove posição atual do open set
         _.remove(openSet, (position) => isEqual(position, current))
 
-        // add current position to closed set
+        // adiciona posição atual ao closed set 
         closedSet.push(current)
 
         const neighbors = getNeighbors(current)
@@ -275,16 +291,15 @@ function uniformCost(start, goal) {
                 continue
             }
 
-            const tentativeGscore = gScores[current] + 1 // distance between current and neighbor position is equal to 1
-
             if (!isInSet(openSet, neighbor)) {
                 openSet.push(neighbor)
-            } else if (tentativeGscore >= gScores[neighbor]) {
+            } else {
                 continue
             }
 
             cameFrom[neighbor] = current
-            gScores[neighbor] = tentativeGscore
+            fScores[neighbor] = fScores[neighbor] + 1
+
         }
     }
 }

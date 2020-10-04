@@ -46,9 +46,9 @@ numbers = start;
 paintBoard(board, numbers);
 
 // executando algoritmo, escolha o algoritmo desejado abaixo e comente os outros dois
-const {fullPath, closedSet, openSet} = aStar(start, goal);
+// const {fullPath, closedSet, openSet} = aStar(start, goal);
 // const {fullPath, closedSet, openSet} = simpleAStar(start, goal);
-// const {fullPath, closedSet, openSet} = uniformCost(start, goal);
+ const {fullPath, closedSet, openSet} = uniformCost(start, goal);
 
 const btnIniciar = document.querySelector('.btn-iniciar');
 btnIniciar.addEventListener("click", (e) => {
@@ -75,8 +75,7 @@ biggestFrontierContainer.innerHTML = `maior tamanho da fronteira: ${biggestFront
 
 
 /**
- * Draw iteration from start to goal position
- * wait 700 ms at each step and then draw next position
+ * Desenha iteração do início à posição de objetivo
  * 
  * @param {[[Number]]} fullPath array of numbers
  * @param {Number} i iteration count
