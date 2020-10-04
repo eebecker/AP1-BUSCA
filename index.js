@@ -39,7 +39,7 @@ let entries = [
     [3, 5, 6, 0, 7, 4, 2, 1, 8]
 ]
 // referencia a entrada aqui abaixo
-const start = (entries[18]);
+const start = (entries[13]);
 
 numbers = start;
 // estado inicial 
@@ -62,6 +62,11 @@ console.log('caminho', fullPath)
 const pathSize = fullPath.length -1;
 const pathSizeContainer = document.querySelector('.path-size');
 pathSizeContainer.innerHTML = `tamanho do caminho: ${pathSize}`;
+
+// total de nodos expandidos 
+const numberOfAllExpandedNodes = closedSet.length + openSet.length;
+const numberOfAllExpandedNodesContainer = document.querySelector('.total-nodes');
+numberOfAllExpandedNodesContainer.innerHTML = `tamanho do total de nodos expandidos: ${numberOfAllExpandedNodes}`;
 
 // total de nodos visitados 
 const numberOfVisitedNodes = closedSet.length;
